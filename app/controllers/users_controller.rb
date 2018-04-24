@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include SessionsHelper
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -27,6 +29,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
+         login @user
          flash[:success] = "Welcome to the Sample App!"
          format.html { redirect_to @user, notice: 'User was successfully created.' }
          format.json { render :show, status: :created, location: @user }
