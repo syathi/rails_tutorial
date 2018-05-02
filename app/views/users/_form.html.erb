@@ -14,6 +14,6 @@
   <%= form.password_field :password_confirmation, class: 'form_control' %>
 
   <div class="actions">
-    <%= form.submit "create my accont", class: "btn btn-primary" %>
+    <%= form.submit yield(:button_text), class: "btn btn-primary" %>
   </div>
 <% end %>
