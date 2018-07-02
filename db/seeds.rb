@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+p "create users..."
 User.create!(
     name: "Example User",
     email: "example@railstutorial.org",
@@ -27,4 +28,11 @@ User.create!(
         activated: true,
         activated_at: Time.zone.now
     )
+end
+
+p "create microposts.."
+users = User.order(:created_at).take(6)
+50.times do
+    content = Faker::Lorem.sentence(5)
+    users.each { |user| user.microposts.create!(content: content) }
 end

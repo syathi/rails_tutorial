@@ -15,7 +15,8 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-    redirect_to root_url and return unless FILL_IN
+    @microposts = @user.microposts.paginate(page: params[:page])
+    # redirect_to root_url and return unless FILL_IN
   end
 
   # GET /users/new
@@ -32,15 +33,12 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    respond_to do |format|
-      if @user.save
-        @user.send_activation_email
-         flash[:info] = "Please check yuor email to activate your account"
-         redirect_to root_url
-      else
-        format.html { render new_user_path }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      @user.send_activation_email
+        flash[:info] = "Please check yuor email to activate your account"
+        redirect_to root_url
+    else
+      render new_user_path
     end
   end
 
