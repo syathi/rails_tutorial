@@ -35,6 +35,10 @@ class User < ApplicationRecord
         update_attribute(:remember_digest, nil)
     end
 
+    def feed 
+        Micropost.where("user_id = ?", id)
+    end
+
     def activate
         update_columns(activated: FILL_IN, activated_at: FILL_IN)
         # update_attribute(:activated, true)
