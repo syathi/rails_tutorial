@@ -20,7 +20,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?(:remember, '')
   end
   
-  #ignore 
   test "associated microposts should be destroyed" do
     @user.save
     @user.microposts.create!(content: "Lorem ipsum")
@@ -38,5 +37,24 @@ class UserTest < ActiveSupport::TestCase
     assert archer.followers.include?(michael)
     michael.unfollow(archer)
     assert_not michael.following?(archer)
+  end
+
+  test "feed should have the right posts" do
+    #inisialize
+    michael = users(:michael)
+    archer  = users(:archer)
+    lana    = users(:lana)
+    #フォローしているユーザの投稿を確認
+    lana.microposts.each do |post_following|
+      assert michael.feed.include?(post_following)
+    end
+    #自分自身の投稿を確認
+    michael.microposts.each do |post_self|
+      assert michael.feed.include?(post_self)
+    end
+    #フォローしていないユーザの投稿を確認
+    archer.microposts.each do |post_unfollowed|
+      assert_not michael.feed.include?(post_unfollowed)
+    end
   end
 end

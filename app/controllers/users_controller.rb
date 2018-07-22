@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.where(activated: FILL_IN).paginate(page: params[:page]) 
+    @users = User.where(activated: true).paginate(page: params[:page]) 
   end
 
   # GET /users/1
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @microposts = @user.microposts.paginate(page: params[:page])
-    # redirect_to root_url and return unless FILL_IN
+    redirect_to root_url and return unless @user.activated?
   end
 
   # GET /users/new

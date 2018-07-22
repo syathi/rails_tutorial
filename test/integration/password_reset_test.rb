@@ -63,7 +63,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert_redirected_to user
   end
   
-  def "expired token" do
+  test "expired token" do
     get new_password_reset_path
     post password_resets_path,
       params: { password_reset: { email: @user.email }}
@@ -77,7 +77,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
       }
       assert_response :assert_redirect
       follow_redirect!
-      assert_match /FILL_IN/i, response.body
+      assert_match /expired/i, response.body
   end
 
 end
